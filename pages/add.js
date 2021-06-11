@@ -43,7 +43,7 @@ export default function AddNewBook() {
   const submitData = async () => {
         if (!data.imageFile) {message.error("Image is required"); return}
         if (!data.name) {message.error("Book's name is required"); return}
-        if (!data.author_id) {message.error("Author is required"); return}
+        if (!data.author_ids || !data.author_ids.length) {message.error("Authors are required"); return}
 
         const uid = firebase.auth().currentUser?.uid
 
@@ -53,9 +53,15 @@ export default function AddNewBook() {
         }
 
         const mutatedData = await insertNewBook({variables: {
-          author_id: data.author_id,
-          name: data.name,
-          user_id: uid
+          object: {
+            name: data.name,
+            user_id: uid,
+            book_authors: {
+              data: data.author_ids.map(authorID => ({
+                "author_id": authorID
+              }))
+            }
+          }
         }})
 
         console.log(mutatedData.data)

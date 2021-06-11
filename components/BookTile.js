@@ -10,7 +10,7 @@ import Link from 'next/link'
 
 
 export default function BookTile({data}) {
-    return <Card>
+    return <Link href={`/book/${data.name.toLowerCase().split(" ").join("-")}-${data.id}`}><Card>
         <CardActionArea>
         <CardMedia
           component="img"
@@ -24,10 +24,10 @@ export default function BookTile({data}) {
             {data.name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            By {data.Author.name}
+            By {data.book_authors.map(d => d?.Author?.name).join(", ")}
           </Typography>
         </CardContent>
       </CardActionArea>
         
-    </Card>
+    </Card></Link>
 }

@@ -43,14 +43,21 @@ export default function Select({onSelect, value}) {
 
 
     useEffect(async () => {
-        const {data: {Authors: authorsData} } = await client.query({query: GET_AUTHORS, variables: {name: `%${inputValue}%`}, fetchPolicy: 'network-only' })
+        let newOptions = []
+        if (inputValue) {
+            const {data: {Authors: authorsData} } = await client.query({query: GET_AUTHORS, variables: {name: `%${inputValue}%`}, fetchPolicy: 'network-only' })
+            newOptions = authorsData.map(d => ({value: d.id, label: d.name}))
+        }
 
-        const newOptions = authorsData.map(d => ({value: d.id, label: d.name}))
-
-        if (value) {
-            const {data: {Authors_by_pk: datum} } = await client.query({query: GET_AUTHOR_BY_PK, variables: {id: value}, fetchPolicy: 'network-only' })
-            newOptions.push({value: datum.id, label: datum.name})
-            setSelectedOption({value: datum.id, label: datum.name})
+        if (value && value.length) {
+            const selectedOptionMaps = []
+            for(let i = 0; i < value.length; i++) {
+                const authorID = value[i]
+                const {data: {Authors_by_pk: datum} } = await client.query({query: GET_AUTHOR_BY_PK, variables: {id: authorID}, fetchPolicy: 'network-only' })
+                newOptions.push({value: datum.id, label: datum.name})
+                selectedOptionMaps.push({value: datum.id, label: datum.name})
+            }
+            setSelectedOption(selectedOptionMaps)
         } else {
             setSelectedOption(null)
         }
@@ -72,7 +79,7 @@ export default function Select({onSelect, value}) {
         console.log(newValue);
         console.log(`action: ${actionMeta.action}`);
         console.groupEnd();
-        onSelect(newValue ? newValue.value : null)
+        onSelect(newValue.map(v => v.value))
         // this.setState({ value: newValue });
       };
 
@@ -95,7 +102,7 @@ export default function Select({onSelect, value}) {
         setIsLoading(false)
         setOptions([...options, {value: newData.id, label: newData.name}])
     
-        onSelect(newData.id)
+        onSelect([...value, newData.id])
 
         // const { options } = this.state;
 
@@ -121,7 +128,9 @@ export default function Select({onSelect, value}) {
     console.log("SELECTED VALUE", value)
 
     return <CreatableSelect
-    placeholder="Select or Create Book's Author"
+    isMulti
+    noOptionsMessage={() => "Search to Create or select an Author"}
+    placeholder="Select or Create Book's Authors"
     isClearable
     inputValue={inputValue}
     isDisabled={isLoading}

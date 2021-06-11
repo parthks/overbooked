@@ -1,5 +1,6 @@
 import styles from '../styles/Home.module.css'
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import adminClient from '../lib/graphql/admin'
+import {QUERY_ALL_BOOKS} from '../lib/graphql/books'
 
 import BookTile from '../components/BookTile'
 
@@ -51,26 +52,10 @@ export default function Home({books}) {
   // use Next/Image to display
 
 export async function getStaticProps() {
-  const client = new ApolloClient({
-    uri: 'http://165.232.180.39/v1/graphql',
-    cache: new InMemoryCache(),
-    headers: {
-      'x-hasura-admin-secret': "QrV2KvcXXpO0NrEVx45dW9Pag0L2"
-    }
-  });
+  
 
-  const {data} = await client.query({
-    query: gql`
-    query MyQuery {
-      Books {
-        name
-        Author {
-          name
-        }
-        id
-      }
-    }
-    `
+  const {data} = await adminClient.query({
+    query: QUERY_ALL_BOOKS
   });
 
   // console.log(data)

@@ -68,7 +68,7 @@ export default function BookDetail({data, setData}) {
         onChange={handleChange}
       >
         {data?.id ? 
-            <img src={"https://overbooked.imgix.net/books/"+data.id+"/cover?h=300&w=300"} alt="avatar" style={{ width: '100%' }} /> 
+            <img src={"https://overbooked.imgix.net/books/"+data.id+"/cover"} alt="avatar" style={{ width: '100%' }} /> 
         : data?.image_url ?
             <img src={data.image_url} alt="avatar" style={{ width: '100%' }} /> 
         : uploadButton}
@@ -92,13 +92,13 @@ export default function BookDetail({data, setData}) {
         fullWidth /><br /><br />
 
       <Typography>Book's Author</Typography>
-      <AuthorSelect onSelect={(authorID) => {
+      <AuthorSelect onSelect={(authorIDs) => {
            setData({
             ...data,
-            author_id: authorID
+            author_ids: authorIDs
         })
         //   setAuthorID(authorID)
-          }} value={data?.author_id} />
+          }} value={data?.author_ids} />
       <br /><br />
 
     </>
