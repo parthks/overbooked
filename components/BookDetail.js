@@ -67,7 +67,11 @@ export default function BookDetail({data, setData}) {
         // beforeUpload={beforeUpload}
         onChange={handleChange}
       >
-        {data?.image_url ? <img src={data.image_url} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+        {data?.id ? 
+            <img src={"https://overbooked.imgix.net/books/"+data.id+"/cover?h=300&w=300"} alt="avatar" style={{ width: '100%' }} /> 
+        : data?.image_url ?
+            <img src={data.image_url} alt="avatar" style={{ width: '100%' }} /> 
+        : uploadButton}
       </Upload>
 
       <br /><br />

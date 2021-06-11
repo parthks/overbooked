@@ -1,6 +1,7 @@
 
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 
+import BookTile from '../components/BookTile'
 
 import React, {useState, useEffect} from 'react';
 import Container from '@material-ui/core/Container';
@@ -15,7 +16,7 @@ const { Search } = Input;
 
 export default function Home({books}) {
   const [loading, setLoading] = useState(false)
-  console.log(books)
+  // console.log(books)
 
 
   const onSearch = (value) => {
@@ -24,16 +25,30 @@ export default function Home({books}) {
     setLoading(false)
   }
   
-  return (
+  return (<>
     <Container maxWidth="sm">
       <Box my={4}>
         <Search onSearch={onSearch} allowClear placeholder="Search for a book" enterButton="Search" size="large" loading={loading} onPressEnter={(e) => onSearch(e.target.value)} />
       </Box>
     </Container>
+
+
+  <div style={{display: 'grid', gridGap: '15px', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr)', gridAutoRows: '300px', gridAutoFlow: 'dense'}}>
+    {books.map(bookData => <BookTile key={bookData.id} data={bookData} />)}
+  </div>
+
+   
+</>
   );
   
 }
 
+ // build tiles - full width!!! grid layout...
+  // click tile to see Book detail on URL of book's name
+
+  // upload image to firebase
+  // connect to imgix
+  // use Next/Image to display
 
 export async function getStaticProps() {
   const client = new ApolloClient({
@@ -49,7 +64,6 @@ export async function getStaticProps() {
     query MyQuery {
       Books {
         name
-        image_url
         Author {
           name
         }

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {INSERT_BOOK} from '../lib/graphql/books'
 import { useMutation, useQuery } from '@apollo/client';
-import firebase from '../lib/firebase'
+import firebase, {customUploadFile} from '../lib/firebase'
 
 
 import Container from '@material-ui/core/Container';
@@ -36,6 +36,47 @@ export default function AddNewBook() {
   const [data, setData] = useState({})
 
   console.log('data',data)
+
+  const [loadingPercent, setLoadingPercent] = useState(false)
+
+
+  const submitData = async () => {
+        if (!data.imageFile) {message.error("Image is required"); return}
+        if (!data.name) {message.error("Book's name is required"); return}
+        if (!data.author_id) {message.error("Author is required"); return}
+
+        const uid = firebase.auth().currentUser?.uid
+
+        if (!uid) {
+          message.error("Not logged in!")
+          return
+        }
+
+        const mutatedData = await insertNewBook({variables: {
+          author_id: data.author_id,
+          name: data.name,
+          user_id: uid
+        }})
+
+        console.log(mutatedData.data)
+
+        const bookID = mutatedData.data.insert_Books_one.id
+
+        customUploadFile({
+          fileName: "cover",
+          location: "books/"+bookID,
+          file: data.imageFile,
+          onError: () => message.error("Image upload failed"),
+          onProgress: ({percent}) => setLoadingPercent(percent),
+          onSuccess: () => {
+            message.success("Successfully Added Book!")
+            setData({})
+          }           
+          
+        });
+
+        
+  }
 
     return <Container maxWidth="sm">
     <Box my={4}>
@@ -76,29 +117,7 @@ export default function AddNewBook() {
       <br /><br /> */}
 
       <Button onClick={async () => {
-        if (!data.imageFile) {message.error("Image is required"); return}
-        if (!data.name) {message.error("Book's name is required"); return}
-        if (!data.author_id) {message.error("Author is required"); return}
-
-        const uid = firebase.auth().currentUser?.uid
-
-        if (!uid) {
-          message.error("Not logged in!")
-          return
-        }
-
-        await insertNewBook({variables: {
-          author_id: data.author_id,
-          name: data.name,
-          image_url: data.image_url,
-          user_id: uid
-        }})
-
-        message.success("Successfully Added Book!")
-
-        setData({})
-
-        
+          await submitData()
       }} variant="contained" color="primary">Submit</Button>
 
 
