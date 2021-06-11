@@ -15,7 +15,7 @@ export default function BookTile({data}) {
         <CardMedia
           component="img"
           alt={data.name}
-          style={{height: 200}}
+          style={{height: 200, objectFit: 'contain'}}
           image={"https://overbooked.imgix.net/books/"+data.id+"/cover?h=200"}
           title={data.name}
         />

@@ -1,4 +1,4 @@
-
+import styles from '../styles/Home.module.css'
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 
 import BookTile from '../components/BookTile'
@@ -33,7 +33,7 @@ export default function Home({books}) {
     </Container>
 
 
-  <div style={{display: 'grid', gridGap: '15px', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr)', gridAutoRows: '300px', gridAutoFlow: 'dense'}}>
+  <div className={styles.grid}>
     {books.map(bookData => <BookTile key={bookData.id} data={bookData} />)}
   </div>
 
