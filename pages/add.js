@@ -9,6 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 
+import LinearProgress from '@material-ui/core/LinearProgress';
+
+
 import SignInScreen from '../components/signInPopup'
 
 import {  message } from 'antd';
@@ -37,13 +40,16 @@ export default function AddNewBook() {
 
   console.log('data',data)
 
-  const [loadingPercent, setLoadingPercent] = useState(false)
+  const [loadingPercent, setLoadingPercent] = useState(0)
+  const [loading, setLoading] = useState(0)
 
 
   const submitData = async () => {
+        
         if (!data.imageFile) {message.error("Image is required"); return}
         if (!data.name) {message.error("Book's name is required"); return}
         if (!data.author_ids || !data.author_ids.length) {message.error("Authors are required"); return}
+        if (!data.type) {message.error("Book's type is required"); return}
 
         const uid = firebase.auth().currentUser?.uid
 
@@ -52,10 +58,13 @@ export default function AddNewBook() {
           return
         }
 
+        setLoading(true)
+
         const mutatedData = await insertNewBook({variables: {
           object: {
             name: data.name,
             user_id: uid,
+            type: data.type,
             book_authors: {
               data: data.author_ids.map(authorID => ({
                 "author_id": authorID
@@ -72,16 +81,20 @@ export default function AddNewBook() {
           fileName: "cover",
           location: "books/"+bookID,
           file: data.imageFile,
-          onError: () => message.error("Image upload failed"),
+          onError: () => {
+            message.error("Image upload failed")
+            setLoadingPercent(0)
+            setLoading(false)
+          },
           onProgress: ({percent}) => setLoadingPercent(percent),
           onSuccess: () => {
             message.success("Successfully Added Book!")
+            setLoadingPercent(0)
+            setLoading(false)
             setData({})
           }           
           
         });
-
-        
   }
 
     return <Container maxWidth="sm">
@@ -122,15 +135,25 @@ export default function AddNewBook() {
       <AuthorSelect onSelect={(authorID) => setAuthorID(authorID)} value={author_id} />
       <br /><br /> */}
 
+
+    {loading ? 
+    
+    <Box display="flex" alignItems="center">
+      <Box width="100%" mr={1}>
+        <LinearProgress variant="determinate" value={loadingPercent} />
+      </Box>
+      <Box minWidth={35}>
+        <Typography variant="body2" color="textSecondary">{`${Math.round(
+          loadingPercent,
+        )}%`}</Typography>
+      </Box>
+    </Box> : 
+
       <Button onClick={async () => {
           await submitData()
       }} variant="contained" color="primary">Submit</Button>
+    }
 
-
-
-    <style jsx global>{`.avatar-uploader > .ant-upload {
-      width: 100%;
-      height: 300px;
-    }`}</style>
+    
   </Container>
 }

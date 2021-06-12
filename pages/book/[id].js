@@ -6,6 +6,8 @@ import {QUERY_BOOK_BY_PK} from '../../lib/graphql/books'
 import Container from '@material-ui/core/Container'
 
 import Image from 'next/image'
+import MatLink from '@material-ui/core/Link';
+
 import Link from 'next/link'
 
 import { Typography } from '@material-ui/core'
@@ -21,9 +23,26 @@ export default function BookDetailPage({data}) {
 
     console.log(data)
 
+    // const backButtonLink = <Link href="/"><MatLink component="button" variant="body2">See more books</MatLink></Link>
+
+    let backButtonLink = <Link href="/"><MatLink variant="body2">See more books</MatLink></Link>
+
+    if (typeof window !== "undefined") {
+        console.log('localStorage.getItem("book-click")', localStorage.getItem("book-click"))
+        if (localStorage.getItem("book-click") === "true") {
+            backButtonLink = <MatLink 
+            onClick={() => {localStorage.setItem("book-click", "false"); window.history.back();}} component="button" variant="body2">See more books</MatLink>
+        }
+    }
+    
     return <>
     <Container style={{paddingTop: '16px'}} maxWidth="sm">
-    <Link href="/"><a>See more books</a></Link><br /><br />
+
+    {backButtonLink}
+    
+    <br /><br />
+
+    <Typography gutterBottom variant="h4" component="h1">{data.name}</Typography>
 
     <img src={"https://overbooked.imgix.net/books/"+data.id+"/cover?w=600"} alt="avatar" style={{ width: '100%' }} /> 
     {/* <Image
@@ -36,11 +55,16 @@ export default function BookDetailPage({data}) {
       /> */}
 
     <br /><br />
-    <Typography gutterBottom variant="h4" component="h1">{data.name}</Typography>
-    
+
 
     <Typography variant="h6" color="textSecondary" component="h2">
         By {data.book_authors.map(d => d?.Author?.name).join(", ")}
+    </Typography>
+
+    <br />
+
+    <Typography variant="h6" color="textSecondary" component="h3">
+    {data.type}
     </Typography>
 
     </Container>

@@ -3,6 +3,11 @@ import { Upload, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Typography, TextField } from '@material-ui/core';
 
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 
 import AuthorSelect from './authorSelect'
 
@@ -61,16 +66,17 @@ export default function BookDetail({data, setData}) {
     <Upload
         style={{width: '100%', maxWidth: '300px', height: '300px'}}
         name="avatar"
+        accept="image/*"
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
         // beforeUpload={beforeUpload}
         onChange={handleChange}
       >
-        {data?.id ? 
-            <img src={"https://overbooked.imgix.net/books/"+data.id+"/cover"} alt="avatar" style={{ width: '100%' }} /> 
-        : data?.image_url ?
-            <img src={data.image_url} alt="avatar" style={{ width: '100%' }} /> 
+        { data?.image_url ?
+            <img src={data.image_url} alt="avatar" style={{ maxWidth: '100%', maxHeight: '300px' }} /> 
+        : data?.id ?
+          <img src={"https://overbooked.imgix.net/books/"+data.id+"/cover?w=600"} alt="avatar" style={{ maxWidth: '100%', maxHeight: '300px' }} />
         : uploadButton}
       </Upload>
 
@@ -100,6 +106,21 @@ export default function BookDetail({data, setData}) {
         //   setAuthorID(authorID)
           }} value={data?.author_ids} />
       <br /><br />
+
+    <FormControl component="fieldset">
+        <FormLabel component="legend">Book's Type</FormLabel>
+        <RadioGroup row aria-label="type" name="type" value={data.type} onChange={(e) => setData({...data, type: e.target.value})}>
+            <FormControlLabel value="fiction" control={<Radio color="primary" />} label="Fiction" />
+            <FormControlLabel value="non-fiction" control={<Radio color="primary" />} label="Non-Fiction" />
+        </RadioGroup>
+    </FormControl>
+
+    <br /><br />
+
+    <style jsx global>{`.avatar-uploader > .ant-upload {
+      width: 100%;
+      height: 300px;
+    }`}</style>
 
     </>
 }

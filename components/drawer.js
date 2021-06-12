@@ -14,6 +14,7 @@ import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 
 import Link from 'next/link'
 import firebase from '../lib/firebase'
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles({
   list: {
@@ -24,7 +25,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TemporaryDrawer({openState, toggleDrawer, authUser}) {
+export default function TemporaryDrawer({openState, toggleDrawer, authUser, userData}) {
   const classes = useStyles();
 //   const [openState, setOpenState] = React.useState(false);
 
@@ -55,6 +56,7 @@ if (typeof window !== "undefined") {
                 onClick={() => toggleDrawer(false)}
                 onKeyDown={() => toggleDrawer(false)}
                 >
+                  <Typography variant="h6" style={{padding: '8px'}}>Welcome {userData.name}</Typography>
                 <List>
                     <Link href="/"><ListItem selected={selectedPath === "/"} button>
                         <ListItemIcon>{<LocalLibraryIcon />}</ListItemIcon>
@@ -68,6 +70,13 @@ if (typeof window !== "undefined") {
                         <ListItemText primary={"Add a Book"} />
                     </ListItem></Link>
                 </List>
+                {/* <Divider />
+                <List>
+                    <Link href="/account"><ListItem selected={selectedPath === "/account"} button>
+                        <ListItemIcon>{<LocalLibraryIcon />}</ListItemIcon>
+                        <ListItemText primary={"My Account"} />
+                    </ListItem></Link>
+                </List> */}
                 {/* <List>
                     {['All mail', 'Trash', 'Spam'].map((text, index) => (
                     <ListItem button key={text}>

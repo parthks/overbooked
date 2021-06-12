@@ -5,7 +5,10 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/theme';
 
+import '../styles/globals.css'
+
 import Navbar from '../components/navbar'
+import Footer from '../components/footer'
 import 'antd/dist/antd.css'
 import 'antd-mobile/dist/antd-mobile.css';
 
@@ -43,8 +46,19 @@ export default function MyApp(props) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <ApolloProvider client={client}>
+        
+
+        <div id="page-container">
         <Navbar />
-        <Component {...pageProps} />
+        <main id="content-wrap">
+          <Component {...pageProps} />
+        </main>
+        <Footer />
+        </div>
+
+       
+        
+
         </ApolloProvider>
       </ThemeProvider>
     </React.Fragment>
@@ -55,3 +69,16 @@ MyApp.propTypes = {
   Component: PropTypes.elementType.isRequired,
   pageProps: PropTypes.object.isRequired,
 };
+
+
+
+
+
+
+
+/*
+# replace :80 with your domain name to get automatic https via LetsEncrypt
+database.overbooked.in {
+  reverse_proxy graphql-engine:8080
+}
+*/

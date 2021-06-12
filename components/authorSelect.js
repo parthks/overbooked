@@ -62,7 +62,7 @@ export default function Select({onSelect, value}) {
             setSelectedOption(null)
         }
 
-        console.log(...newOptions)
+        // console.log(...newOptions)
         setOptions(newOptions)
 
     }, [inputValue, value])
@@ -70,15 +70,15 @@ export default function Select({onSelect, value}) {
 
 
     const handleInputChange = (inputVal, meta) => {
-        console.log('SET INPUT VALUE',inputVal, meta)
+        // console.log('SET INPUT VALUE',inputVal, meta)
         setInputValue(inputVal)
     }
 
     const handleChange = (newValue, actionMeta) => {
-        console.group('Value Changed');
-        console.log(newValue);
-        console.log(`action: ${actionMeta.action}`);
-        console.groupEnd();
+        // console.group('Value Changed');
+        // console.log(newValue);
+        // console.log(`action: ${actionMeta.action}`);
+        // console.groupEnd();
         onSelect(newValue.map(v => v.value))
         // this.setState({ value: newValue });
       };
@@ -88,16 +88,18 @@ export default function Select({onSelect, value}) {
         setIsLoading(true)
 
         // console.group('Option created');
-        console.log('Wait a moment...');
+        // console.log('Wait a moment...');
 
         try {
         const {data: {insert_Authors_one: newData}} = await insertNewAuthor({variables: {name: inputValue}})
         
         //client.mutate({mutation: INSERT_AUTHOR, variables: {name: inputValue} })
 
-        console.log(newData)
-        console.log(inputValue);
+        // console.log(newData)
+        // console.log(inputValue);
         // console.groupEnd();
+
+        
         // await refetch()
         setIsLoading(false)
         setOptions([...options, {value: newData.id, label: newData.name}])

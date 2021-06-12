@@ -16,6 +16,13 @@ import Link from 'next/link'
 
 import SignInScreen from './signInPopup'
 
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -36,6 +43,16 @@ export default function NavBarAppBar() {
   const [loginVisible, setLoginVisible] = useState(false)
   const [authUser, setAuthUser] = useState(false)
   const [userData, setUserData] = useState(false)
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const menuOpen = Boolean(anchorEl);
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   
 
   // Listen to the Firebase Auth state and set the local state.
@@ -63,21 +80,50 @@ export default function NavBarAppBar() {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton onClick={() => setOpenState(!openState)} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+
+          {authUser ? <IconButton onClick={() => setOpenState(!openState)} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
-          </IconButton>
+          </IconButton> : ''}
+
           <Link href="/"><Typography variant="h6" className={classes.title}>
             Overbooked
           </Typography></Link>
 
-          {authUser === false || authUser ? '' : <Button onClick={() => setLoginVisible(true)} color="inherit">Login</Button>}
+          {authUser ? <IconButton
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleMenu}
+            color="inherit"
+          >
+            <AccountCircle />
+          </IconButton> : <Button onClick={() => setLoginVisible(true)} color="inherit">Login</Button>}
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            open={menuOpen}
+            onClose={handleClose}
+          >
+            <Link href="/account/profile"><MenuItem onClick={handleClose}>Profile</MenuItem></Link>
+            <Link href="/account/books"><MenuItem onClick={handleClose}>My Books</MenuItem></Link>
+            <Link href="/account/interests"><MenuItem onClick={handleClose}>My Interests</MenuItem></Link>
+          </Menu>
 
         </Toolbar>
       </AppBar>
 
       <SignInScreen onClose={() => setLoginVisible(false)} visible={loginVisible} />
 
-      <SideDrawer userData={userData} authUser={authUser} openState={openState} toggleDrawer={setOpenState} />
+      {authUser ? <SideDrawer userData={userData} authUser={authUser} openState={openState} toggleDrawer={setOpenState} /> : ''}
     </div>
   );
 }

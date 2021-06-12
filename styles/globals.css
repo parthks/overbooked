@@ -14,3 +14,30 @@ a {
 * {
   box-sizing: border-box;
 }
+
+
+#page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+#content-wrap {
+  padding-bottom: 232px;    /* Footer height + Top Margin */
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  margin-top: 32px;
+  width: 100%;
+  background-color: #556cd6;
+  color: white;
+  height: 200px;            /* Footer height */
+}
+
+
+footer{
+  padding: 20px;
+}
+
+

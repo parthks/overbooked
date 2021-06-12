@@ -1,5 +1,7 @@
 import styles from '../styles/Home.module.css'
 import adminClient from '../lib/graphql/admin'
+import { useQuery } from '@apollo/client';
+
 import {QUERY_ALL_BOOKS} from '../lib/graphql/books'
 
 import BookTile from '../components/BookTile'
@@ -15,27 +17,49 @@ const { Search } = Input;
 
 
 
-export default function Home({books}) {
-  const [loading, setLoading] = useState(false)
-  // console.log(books)
+export default function Home({}) {
+
+  const inputRef = React.useRef(null)
+
+  const [searchQuery, setSearchQuery] = useState('%%')
+
+  const { loading, error, data } = useQuery(QUERY_ALL_BOOKS, {
+    variables: { search: searchQuery },
+  });
+
+
+  const books = loading ? [] : data.Books
+  // const [loading, setLoading] = useState(false)
+  console.log(books)
 
 
   const onSearch = (value) => {
     console.log({value})
-    alert(value)
-    setLoading(false)
+    // alert(value)
+    setSearchQuery(`%${value}%`)
+
+    inputRef.current?.blur()
+
+    // inputRef.current!.focus({
+    //   cursor: 'end',
+    // });
+    // setLoading(false)
   }
   
   return (<>
     <Container maxWidth="sm">
       <Box my={4}>
-        <Search onSearch={onSearch} allowClear placeholder="Search for a book" enterButton="Search" size="large" loading={loading} onPressEnter={(e) => onSearch(e.target.value)} />
+        <Search 
+        ref={inputRef}
+        onSearch={onSearch} 
+        allowClear 
+        placeholder="Search for a book for title or author" enterButton="Search" size="large" loading={loading} onPressEnter={(e) => onSearch(e.target.value)} />
       </Box>
     </Container>
 
 
   <div className={styles.grid}>
-    {books.map(bookData => <BookTile key={bookData.id} data={bookData} />)}
+  {loading ? '' : books.map(bookData => <BookTile key={bookData.id} data={bookData} />)}
   </div>
 
    
@@ -54,16 +78,16 @@ export default function Home({books}) {
 export async function getStaticProps() {
   
 
-  const {data} = await adminClient.query({
-    query: QUERY_ALL_BOOKS
-  });
+  // const {data} = await adminClient.query({
+  //   query: QUERY_ALL_BOOKS
+  // });
 
   // console.log(data)
 
 
   return {
     props: {
-      books: data.Books
+      books: []
     }
   }
 }
