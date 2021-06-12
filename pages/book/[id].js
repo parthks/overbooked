@@ -44,9 +44,9 @@ export default function BookDetailPage({data}) {
 
     <Typography gutterBottom variant="h4" component="h1">{data.name}</Typography>
 
-    <img src={"https://overbooked.imgix.net/books/"+data.id+"/cover?w=600"} alt="avatar" style={{ width: '100%' }} /> 
+    <img src={"https://overbooked.imgix.net/books/"+data.id+"/"+data.cover_image+"?w=600"} alt="avatar" style={{ width: '100%' }} /> 
     {/* <Image
-        src={"/books/"+data.id+"/cover"}
+        src={"/books/"+data.id+""}
         alt="Cover of Book"
         width={600}
         height={500}

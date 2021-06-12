@@ -3,7 +3,7 @@ import {useState} from 'react'
 import {QUERY_BOOK_BY_UID, UPDATE_BOOK} from '../../lib/graphql/books'
 import { useQuery, useMutation } from '@apollo/client';
 
-import {useAuthUserState} from '../../lib/firebase'
+import {useAuthUserState, customUploadFile, deleteFileFromStorage} from '../../lib/firebase'
 import MaterialTable from 'material-table'
 import tableIcons from '../../lib/tableIcons'
 
@@ -17,6 +17,7 @@ import BookDetail from '../../components/BookDetail';
 import { Button } from '@material-ui/core';
 import {  message } from 'antd';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import { v4 as uuidv4 } from 'uuid';
 
 
 export default function MyBooks() {
@@ -53,21 +54,21 @@ export default function MyBooks() {
         }
 
         setUploadLoading(true)
+    
         
-
-        const mutatedData = await updateBookData({variables: {
-            name: bookDetail.name,
-            id: bookDetail.id,
-            type: bookDetail.type,
-            object: bookDetail.author_ids.map(authorID => ({
-                "author_id": authorID,
-                "book_id": bookDetail.id
-            }))
-        }})
-
         console.log(bookDetail)
 
+        // NO New Image File Uploaded
         if (!bookDetail.imageFile) {
+            await updateBookData({variables: {
+                name: bookDetail.name,
+                id: bookDetail.id,
+                type: bookDetail.type,
+                object: bookDetail.author_ids.map(authorID => ({
+                    "author_id": authorID,
+                    "book_id": bookDetail.id
+                }))
+            }})    
             refetch()
             window.scrollTo(0,0)
             message.success("Successfully Updated Book!")
@@ -77,10 +78,14 @@ export default function MyBooks() {
             return
         }
 
+        const newImageID = uuidv4()
+
         const bookID = bookDetail.id
 
+        deleteFileFromStorage("books/"+bookID+"/"+bookDetail.cover_image).catch(e => message.error("Failed to delete old image"))
+
         customUploadFile({
-            fileName: "cover",
+            fileName: newImageID,
             location: "books/"+bookID,
             file: bookDetail.imageFile,
             onError: () => {
@@ -89,8 +94,19 @@ export default function MyBooks() {
                 setUploadLoading(false)
             },
             onProgress: ({percent}) => setLoadingPercent(percent),
-            onSuccess: () => {
+            onSuccess: async () => {
+            await updateBookData({variables: {
+                name: bookDetail.name,
+                id: bookDetail.id,
+                cover_image: newImageID,
+                type: bookDetail.type,
+                object: bookDetail.author_ids.map(authorID => ({
+                    "author_id": authorID,
+                    "book_id": bookDetail.id
+                }))
+            }})    
             refetch()
+            window.scrollTo(0,0)
             message.success("Successfully Updated Book!")
             setLoadingPercent(0)
             setUploadLoading(false)
@@ -135,7 +151,7 @@ export default function MyBooks() {
     :
     <MaterialTable
         icons={tableIcons}
-        loading={loading}
+        isLoading={loading || data === undefined || !!error}
           columns={[
             { title: 'ID', field: 'id', defaultSort: 'asc' },
             { title: 'Name', field: 'name' },

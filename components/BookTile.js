@@ -27,7 +27,7 @@ export default function BookTile({data}) {
           component="img"
           alt={data.name}
           style={{height: 200, objectFit: 'contain'}}
-          image={"https://overbooked.imgix.net/books/"+data.id+"/cover?h=200"}
+          image={"https://overbooked.imgix.net/books/"+data.id+"/"+data.cover_image+"?h=200"}
           title={data.name}
         />
         <CardContent>

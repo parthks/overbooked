@@ -3,6 +3,8 @@ import {INSERT_BOOK} from '../lib/graphql/books'
 import { useMutation, useQuery } from '@apollo/client';
 import firebase, {customUploadFile} from '../lib/firebase'
 
+import { v4 as uuidv4 } from 'uuid';
+
 
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
@@ -60,9 +62,12 @@ export default function AddNewBook() {
 
         setLoading(true)
 
+        const imageID = uuidv4();
+
         const mutatedData = await insertNewBook({variables: {
           object: {
             name: data.name,
+            cover_image: imageID,
             user_id: uid,
             type: data.type,
             book_authors: {
@@ -77,8 +82,10 @@ export default function AddNewBook() {
 
         const bookID = mutatedData.data.insert_Books_one.id
 
+        
+
         customUploadFile({
-          fileName: "cover",
+          fileName: imageID,
           location: "books/"+bookID,
           file: data.imageFile,
           onError: () => {
@@ -91,6 +98,7 @@ export default function AddNewBook() {
             message.success("Successfully Added Book!")
             setLoadingPercent(0)
             setLoading(false)
+            window.scrollTo(0,0)
             setData({})
           }           
           

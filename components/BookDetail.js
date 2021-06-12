@@ -75,8 +75,8 @@ export default function BookDetail({data, setData}) {
       >
         { data?.image_url ?
             <img src={data.image_url} alt="avatar" style={{ maxWidth: '100%', maxHeight: '300px' }} /> 
-        : data?.id ?
-          <img src={"https://overbooked.imgix.net/books/"+data.id+"/cover?w=600"} alt="avatar" style={{ maxWidth: '100%', maxHeight: '300px' }} />
+        : data?.cover_image && data?.id ?
+          <img src={"https://overbooked.imgix.net/books/"+data.id+"/"+data.cover_image+"?w=600"} alt="avatar" style={{ maxWidth: '100%', maxHeight: '300px' }} />
         : uploadButton}
       </Upload>
 
@@ -109,7 +109,7 @@ export default function BookDetail({data, setData}) {
 
     <FormControl component="fieldset">
         <FormLabel component="legend">Book's Type</FormLabel>
-        <RadioGroup row aria-label="type" name="type" value={data.type} onChange={(e) => setData({...data, type: e.target.value})}>
+        <RadioGroup row aria-label="type" name="type" value={data?.type ? data?.type : ''} onChange={(e) => setData({...data, type: e.target.value})}>
             <FormControlLabel value="fiction" control={<Radio color="primary" />} label="Fiction" />
             <FormControlLabel value="non-fiction" control={<Radio color="primary" />} label="Non-Fiction" />
         </RadioGroup>
