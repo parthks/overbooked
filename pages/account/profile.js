@@ -115,6 +115,8 @@ export default function Profile() {
                     coordinates
                 }
                 setUserData({...userData, location})
+            } else {
+                message.error("Location not found")
             }
             console.log(data.lat, data.lon, data[0])
 

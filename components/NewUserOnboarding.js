@@ -91,11 +91,12 @@ export default function HorizontalLabelPositionBelowStepper({activeStep, handleN
     setSearchLoading(true)
 
     const res = await fetch(API+searchQuery)
-
     const data = await res.json()
 
     if (data && data.length) {
       setCoordinates([parseFloat(data[0].lat), parseFloat(data[0].lon)])
+    } else {
+      message.error("Location not found")
     }
     console.log(data.lat, data.lon, data[0])
 

@@ -103,8 +103,12 @@ export default function Select({onSelect, value}) {
         // await refetch()
         setIsLoading(false)
         setOptions([...options, {value: newData.id, label: newData.name}])
-    
-        onSelect([...value, newData.id])
+            
+        if (value && value.length) {
+            onSelect([...value, newData.id])
+        } else {
+            onSelect([newData.id])
+        }
 
         // const { options } = this.state;
 
