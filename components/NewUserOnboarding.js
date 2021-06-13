@@ -147,6 +147,7 @@ export default function HorizontalLabelPositionBelowStepper({activeStep, handleN
             <TextField 
             value={email ? email : ''}
             label="Email ID"
+            helperText="We will use this Email ID to send notifications of any interests received on your books"
             onChange={e => setEmail(e.target.value)}
             fullWidth /><br /><br />
             </>

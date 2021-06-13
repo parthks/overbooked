@@ -16,6 +16,10 @@ import { ApolloProvider } from '@apollo/client/react';
 import {client} from '../lib/graphql/client'
 
 
+import { Provider } from 'react-redux'
+import store from '../lib/redux/store'
+
+
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
@@ -42,9 +46,11 @@ export default function MyApp(props) {
         <title>My page</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
+
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
+        <Provider store={store}>
         <ApolloProvider client={client}>
         
 
@@ -60,6 +66,7 @@ export default function MyApp(props) {
         
 
         </ApolloProvider>
+        </Provider>
       </ThemeProvider>
     </React.Fragment>
   );

@@ -5,6 +5,8 @@ import firebase from '../lib/firebase'
 import {INSERT_USER, QUERY_USER, UPDATE_USER} from '../lib/graphql/user'
 import { useQuery } from '@apollo/client';
 
+import { useSelector, useDispatch } from 'react-redux'
+import { updateUser } from '../lib/redux/slices/user'
 
 
 import Container from '@material-ui/core/Container';
@@ -20,9 +22,15 @@ import { message } from 'antd';
 export default function NewUserRegistration() {
     const [loggedIn, setLoggedIn] = useState(null)
 
+    const dispatch = useDispatch()
+
     // const [userData, setUserData] = useState(null)
     const { loading, error, data, refetch } = useQuery(QUERY_USER, {
-        variables: { uid: loggedIn ? loggedIn.uid : null }
+        variables: { uid: loggedIn ? loggedIn.uid : null },
+        onCompleted: (data) => {
+            console.log("QUERY COMPLETE", data)
+            if (data.Users_by_pk?.new_user === false) window.location.href = "/"
+        }
     });
 
     
@@ -61,7 +69,7 @@ export default function NewUserRegistration() {
             }
         } else if (activeStep === 2) {
             if (!data.notification_email && !data.notification_phone) {
-                message.error("At least one contact method is required")
+                message.error("At least one notification method is required")
                 return false
             }
         }
@@ -73,6 +81,7 @@ export default function NewUserRegistration() {
         if (!validateFields(data)) {return}
         await client.mutate({mutation: UPDATE_USER, variables: {uid: loggedIn.uid, data}  })
         refetch()
+        dispatch(updateUser(data))
 
         if (activeStep === 2) {
             // finish
@@ -81,6 +90,7 @@ export default function NewUserRegistration() {
         } else {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
+        
         
     };
     const handleBack = async (data) => {

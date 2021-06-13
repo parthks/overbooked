@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -25,7 +27,8 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TemporaryDrawer({openState, toggleDrawer, authUser, userData}) {
+export default function TemporaryDrawer({openState, toggleDrawer, authUser}) {
+  const userData = useSelector((state) => state.user.userData)
   const classes = useStyles();
 //   const [openState, setOpenState] = React.useState(false);
 
@@ -56,7 +59,7 @@ if (typeof window !== "undefined") {
                 onClick={() => toggleDrawer(false)}
                 onKeyDown={() => toggleDrawer(false)}
                 >
-                  <Typography variant="h6" style={{padding: '8px'}}>Welcome {userData.name}</Typography>
+                  <Typography variant="h6" style={{padding: '8px'}}>Welcome {userData?.name ? userData?.name : ''}</Typography>
                 <List>
                     <Link href="/"><ListItem selected={selectedPath === "/"} button>
                         <ListItemIcon>{<LocalLibraryIcon />}</ListItemIcon>

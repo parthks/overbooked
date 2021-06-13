@@ -3,6 +3,10 @@ import firebase from '../lib/firebase'
 import {client} from '../lib/graphql/client'
 import {QUERY_USER} from '../lib/graphql/user'
 
+import { useSelector, useDispatch } from 'react-redux'
+import { updateUser } from '../lib/redux/slices/user'
+
+
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -42,7 +46,10 @@ export default function NavBarAppBar() {
 
   const [loginVisible, setLoginVisible] = useState(false)
   const [authUser, setAuthUser] = useState(false)
-  const [userData, setUserData] = useState(false)
+  // const [userData, setUserData] = useState(false)
+  const userData = useSelector((state) => state.user.userData)
+  const dispatch = useDispatch()
+
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const menuOpen = Boolean(anchorEl);
@@ -61,20 +68,22 @@ export default function NavBarAppBar() {
       setAuthUser(user);
       if (user) {
         const {data: {Users_by_pk: userData}} = await client.query({query: QUERY_USER, variables: {uid: user.uid}})
-        console.log(userData)
-        setUserData(userData)
+        // console.log(userData)
+        // console.log("SENDING ACTION", userData)
+        dispatch(updateUser(userData))
+        if (userData === null || userData.new_user) {
+          if (window.location.pathname != "/new-user") window.location.href = "/new-user"
+        }
+        // setUserData(userData)
         
-        console.log({user})
+        // console.log({user})
       }
       
     });
     return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
   }, []);
 
-  
-  if (userData === null || userData.new_user) {
-    if (window.location.pathname != "/new-user") window.location.href = "/new-user"
-  }
+  // console.log("userData", userData)
 
   return (
     <div className={classes.root}>
