@@ -17,6 +17,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import SideDrawer from './drawer'
 import Link from 'next/link'
+import Image from 'next/image'
+import logo from '../public/logo.png'
 
 import SignInScreen from './signInPopup'
 
@@ -94,9 +96,17 @@ export default function NavBarAppBar() {
             <MenuIcon />
           </IconButton> : ''}
 
-          <Link href="/"><Typography variant="h6" className={classes.title}>
+          
+          <Image loader={({src}) => src} src={logo} width={35} height={35} layout="fixed" />
+          
+
+          <Link href="/"><Typography style={{marginLeft: '8px'}} variant="h6" className={classes.title}>
             Overbooked
           </Typography></Link>
+
+          
+
+          {/* <Link href="/add"><Button style={{color: 'white'}}>Add Books</Button></Link> */}
 
           {authUser ? <IconButton
             aria-label="account of current user"

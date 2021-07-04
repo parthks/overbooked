@@ -1,66 +1,54 @@
-import styles from '../styles/Home.module.css'
-import adminClient from '../lib/graphql/admin'
-import { useQuery } from '@apollo/client';
+import logo from '../public/logo.png'
+import Image from 'next/image'
+import NextLink from 'next/link'
 
-import {QUERY_ALL_BOOKS} from '../lib/graphql/books'
+import { useRouter } from 'next/router'
 
-import BookTile from '../components/BookTile'
 
-import React, {useState, useEffect} from 'react';
 import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Link from '@material-ui/core/Link';
 
 import { Input } from 'antd';
+import { Typography } from '@material-ui/core';
 
 const { Search } = Input;
 
 
 
 export default function Home({}) {
-
-  const inputRef = React.useRef(null)
-
-  const [searchQuery, setSearchQuery] = useState('%%')
-
-  const { loading, error, data } = useQuery(QUERY_ALL_BOOKS, {
-    variables: { search: searchQuery },
-  });
-
-
-  const books = loading ? [] : data.Books
-  // const [loading, setLoading] = useState(false)
-  console.log(books)
+  const router = useRouter()
 
 
   const onSearch = (value) => {
     console.log({value})
+    router.push("/search?q="+value)
     // alert(value)
-    setSearchQuery(`%${value}%`)
-
-    inputRef.current?.blur()
-
-    // inputRef.current!.focus({
-    //   cursor: 'end',
-    // });
-    // setLoading(false)
   }
   
   return (<>
     <Container maxWidth="sm">
-      <Box my={4}>
+      <Box textAlign="center" my={4}>
+        <Image loader={({src}) => src} src={logo} width={300} height={300} />
+        <br /><br />
         <Search 
-        ref={inputRef}
         onSearch={onSearch} 
         allowClear 
-        placeholder="Search for a book for title or author" enterButton="Search" size="large" loading={loading} onPressEnter={(e) => onSearch(e.target.value)} />
+        placeholder="Search by title or author" enterButton="Search" size="large" 
+        onPressEnter={(e) => onSearch(e.target.value)} />
+        <br /><br />
+
+        <Typography>Have some extra books you want to donate?&nbsp;&nbsp;
+        <NextLink href="/add"><Link href="/add">
+        Add Books Now
+        </Link></NextLink>
+        </Typography>
+        
       </Box>
     </Container>
 
 
-  <div className={styles.grid}>
-  {loading ? '' : books.map(bookData => <BookTile key={bookData.id} data={bookData} />)}
-  </div>
+
 
    
 </>

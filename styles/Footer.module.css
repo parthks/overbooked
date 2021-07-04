@@ -1,0 +1,29 @@
+#footer {
+    position: absolute;
+    bottom: 0;
+    margin-top: 32px;
+    width: 100%;
+    background-color: #556cd6;
+    color: white;
+    height: fit-content;            /* Footer height */
+  }
+  
+
+#footer{
+    padding: 20px;
+  }
+
+/* @media (max-width: 485px) {
+    #footer {
+        height: 400px;
+    }
+} */
+
+.description {
+    font-size: 15px;
+}
+
+.quote {
+    font-style: italic;
+    font-size: 1rem;
+}

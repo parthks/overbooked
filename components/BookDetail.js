@@ -108,7 +108,7 @@ export default function BookDetail({data, setData}) {
       <br /><br />
 
     <FormControl component="fieldset">
-        <FormLabel component="legend">Book's Type</FormLabel>
+        <FormLabel component="legend">Book's Genre</FormLabel>
         <RadioGroup row aria-label="type" name="type" value={data?.type ? data?.type : ''} onChange={(e) => setData({...data, type: e.target.value})}>
             <FormControlLabel value="fiction" control={<Radio color="primary" />} label="Fiction" />
             <FormControlLabel value="non-fiction" control={<Radio color="primary" />} label="Non-Fiction" />

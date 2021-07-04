@@ -68,7 +68,7 @@ export default function HorizontalLabelPositionBelowStepper({activeStep, handleN
 
 //   const [pincode, setPincode] = useState(userData ? userData.pincode : null)
 
-    const [searchLoading, setSearchLoading] = useState(false)
+  const [searchLoading, setSearchLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState(userData ? userData.location_query : null)
   const [coordinates, setCoordinates] = useState(userData ? userData.location ? userData.location.coordinates : null : null)
 

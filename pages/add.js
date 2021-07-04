@@ -51,7 +51,7 @@ export default function AddNewBook() {
         if (!data.imageFile) {message.error("Image is required"); return}
         if (!data.name) {message.error("Book's name is required"); return}
         if (!data.author_ids || !data.author_ids.length) {message.error("Authors are required"); return}
-        if (!data.type) {message.error("Book's type is required"); return}
+        if (!data.type) {message.error("Book's genre is required"); return}
 
         const uid = firebase.auth().currentUser?.uid
 

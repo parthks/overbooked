@@ -32,7 +32,7 @@ export default function BookTile({data}) {
         />
         <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-            {data.type}
+            Genre: {data.type}
           </Typography>
           
           <Typography variant="body2" color="textSecondary" component="p">

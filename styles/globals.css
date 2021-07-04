@@ -22,22 +22,19 @@ a {
 }
 
 #content-wrap {
-  padding-bottom: 232px;    /* Footer height + Top Margin */
-}
-
-footer {
-  position: absolute;
-  bottom: 0;
-  margin-top: 32px;
-  width: 100%;
-  background-color: #556cd6;
-  color: white;
-  height: 200px;            /* Footer height */
+  padding-bottom: 275px;    /* Footer height + Top Margin */
 }
 
 
-footer{
-  padding: 20px;
+@media (max-width: 485px) {
+  #content-wrap {
+    padding-bottom: 400px;    /* Footer height + Top Margin */
+  }
+}
+@media (max-width: 330) {
+  #content-wrap {
+    padding-bottom: 475px;    /* Footer height + Top Margin */
+  }
 }
 
 
