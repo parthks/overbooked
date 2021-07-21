@@ -29,7 +29,7 @@ export default function Home({}) {
   return (<>
     <Container maxWidth="sm">
       <Box textAlign="center" my={4}>
-        <Image loader={({src}) => src} src={logo} width={300} height={300} />
+        <Image loader={({src}) => src} src={logo} width={376} height={300} />
         <br /><br />
         <Search 
         onSearch={onSearch} 
