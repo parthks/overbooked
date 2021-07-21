@@ -84,6 +84,7 @@ export default function MyBooks() {
         // NO New Image File Uploaded
         if (!bookDetail.imageFile) {
             await updateBookData({variables: {
+                isbn: bookDetail.isbn ? bookDetail.isbn : null,
                 name: bookDetail.name,
                 id: bookDetail.id,
                 cover_image: bookDetail.cover_image,
@@ -120,6 +121,7 @@ export default function MyBooks() {
             onProgress: ({percent}) => setLoadingPercent(percent),
             onSuccess: async () => {
             await updateBookData({variables: {
+                isbn: bookDetail.isbn ? bookDetail.isbn : null,
                 name: bookDetail.name,
                 id: bookDetail.id,
                 cover_image: newImageID,
@@ -255,7 +257,7 @@ export default function MyBooks() {
         showIcon
         /> : ''}
 
-        <BookDetail setData={bookDetail.approved || bookDetail.approved === null ? (dadada) => {} : setBookDetail} data={bookDetail} /> 
+        <BookDetail readOnly={bookDetail.approved || bookDetail.approved === null} setData={bookDetail.approved || bookDetail.approved === null ? (dadada) => {} : setBookDetail} data={bookDetail} /> 
 
         {uploadLoading ? 
         <Box display="flex" alignItems="center">

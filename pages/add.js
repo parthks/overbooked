@@ -66,6 +66,7 @@ export default function AddNewBook() {
 
         const mutatedData = await insertNewBook({variables: {
           object: {
+            isbn: data.isbn ? data.isbn : null,
             name: data.name,
             cover_image: imageID,
             user_id: uid,
@@ -113,35 +114,7 @@ export default function AddNewBook() {
     <SignInScreen />
 
 
-    <BookDetail setData={setData} data={data} />
-
-
-      {/* <Upload
-        style={{width: '100%', maxWidth: '300px', height: '300px'}}
-        name="avatar"
-        listType="picture-card"
-        className="avatar-uploader"
-        showUploadList={false}
-        // beforeUpload={beforeUpload}
-        onChange={handleChange}
-      >
-        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-      </Upload>
-
-      <br /><br />
-
-      <Typography>Book's Name</Typography>
-      <TextField 
-        size="small"
-        variant="outlined"
-        value={bookName}
-        placeholder="Enter Book's Name"
-        onChange={e => setBookName(e.target.value)}
-        fullWidth /><br /><br />
-
-      <Typography>Book's Author</Typography>
-      <AuthorSelect onSelect={(authorID) => setAuthorID(authorID)} value={author_id} />
-      <br /><br /> */}
+    <BookDetail readOnly={false} setData={setData} data={data} />
 
 
     {loading ? 

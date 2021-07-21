@@ -10,7 +10,7 @@ import CreatableSelect from 'react-select/creatable';
 import { message } from 'antd';
 
 
-export default function Select({onSelect, value}) {
+export default function Select({onSelect, value, disabled}) {
 
     const [isLoading, setIsLoading] = useState(false)
     const [options, setOptions] = useState([])
@@ -139,7 +139,7 @@ export default function Select({onSelect, value}) {
     placeholder="Select or Create Book's Authors"
     isClearable
     inputValue={inputValue}
-    isDisabled={isLoading}
+    isDisabled={isLoading || disabled}
     isLoading={isLoading}
     onInputChange={handleInputChange}
     onChange={handleChange}
