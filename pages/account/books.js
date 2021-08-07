@@ -25,7 +25,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import SignInScreen from '../../components/signInPopup'
 import BookDetail from '../../components/BookDetail';
 import { Button } from '@material-ui/core';
-import {  message } from 'antd';
+import {  message, notification } from 'antd';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { v4 as uuidv4 } from 'uuid';
 import BookTile from '../../components/BookTile';
@@ -218,7 +218,13 @@ export default function MyBooks() {
                             if (d.id === rowData.id) {return {...d, approved: true}}
                             {return {...d, approved: false}}
                         }) })
-                        message.success("Accepted Interest")
+                        message.success("Accepted Interest");
+                        notification.open({
+                            message: 'Email sent successfully',
+                            description:
+                              'Please check your email for contact details and more. If it is missing check your junk email as well.',                            
+                          });
+
                     },
                     disabled: rowData.approved !== null
                 }),

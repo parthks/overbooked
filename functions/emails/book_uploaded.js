@@ -567,15 +567,7 @@ exports.template = (name, bookName) => `<!doctype html>
 				<!--[if mso]>
 				<td valign="top" width="600" style="width:600px;">
 				<![endif]-->
-                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%; min-width:100%;" width="100%" class="mcnTextContentContainer">
-                    <tbody><tr>
-                        
-                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px; text-align: center;">
-                        
-                            <a href="*|ARCHIVE|*" target="_blank">View this email in your browser</a>
-                        </td>
-                    </tr>
-                </tbody></table>
+                
 				<!--[if mso]>
 				</td>
 				<![endif]-->

@@ -30,7 +30,7 @@ export default function SearchBooks({}) {
   // const [searchQuery, setSearchQuery] = useState(`%${router.query.q ? router.query.q : ''}%`)
 
   const { loading, error, data } = useQuery(QUERY_ALL_BOOKS, {
-    variables: { search: `%${router.query.q ? router.query.q : ''}%` },
+    variables: { search: `%${router.query.q ? router.query.q.toLowerCase() : ''}%` },
   });
 
 

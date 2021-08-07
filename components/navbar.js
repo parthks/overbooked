@@ -97,7 +97,7 @@ export default function NavBarAppBar() {
           </IconButton> : ''}
 
           
-          <Image loader={({src}) => src} src={logo} width={35} height={35} layout="fixed" />
+          <Image loader={({src}) => src} src={logo} width={43.75} height={35} layout="fixed" />
           
 
           <Link href="/"><Typography style={{marginLeft: '8px'}} variant="h6" className={classes.title}>

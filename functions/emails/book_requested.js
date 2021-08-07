@@ -567,15 +567,7 @@ exports.template = (name, bookName, requesterName) => `<!doctype html>
 				<!--[if mso]>
 				<td valign="top" width="600" style="width:600px;">
 				<![endif]-->
-                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%; min-width:100%;" width="100%" class="mcnTextContentContainer">
-                    <tbody><tr>
-                        
-                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px; text-align: center;">
-                        
-                            <a href="*|ARCHIVE|*" target="_blank">View this email in your browser</a>
-                        </td>
-                    </tr>
-                </tbody></table>
+                
 				<!--[if mso]>
 				</td>
 				<![endif]-->
@@ -629,7 +621,7 @@ exports.template = (name, bookName, requesterName) => `<!doctype html>
                         <td valign="top" class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
                         
                             <h1><span style="font-size:22px">Yay! Your book has been requested!</span><br>
-<span style="font-size:14px">Hi ${name}, your book ${bookName} has been requested by ${requesterName}. Please <a href="https://overbooked.in/account/books>click here</a>, to accept the book request.</span></h1>
+<span style="font-size:14px">Hi ${name}, your book ${bookName} has been requested by ${requesterName}. Please <a href="https://overbooked.in/account/books">click here</a>, to accept the book request.</span></h1>
 <strong><span style="font-size:14px"><span style="font-family:helvetica neue,helvetica,arial,verdana,sans-serif">We are happy that Overbooked.in has been able to help you!</span></span></strong>
                         </td>
                     </tr>

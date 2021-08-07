@@ -42,7 +42,7 @@ export default function Footer() {
       <Container maxWidth="md">
 
   <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
-      <Image loader={({src}) => src} width={75} height={75} layout="fixed" src={logo} />
+      <Image loader={({src}) => src} width={93.75} height={75} layout="fixed" src={logo} />
       <Typography className={styles.description} style={{width: 'calc(100% - 75px)', paddingLeft: '20px'}} display="inline">
         Contact us admin@overbooked.in
       </Typography>

@@ -48,6 +48,7 @@ const getBookData = gql`
 query MyQuery($id: Int!) {
     Books_by_pk(id: $id) {
       id
+      name
       User {
         name
         email
@@ -119,7 +120,7 @@ exports.book_uploaded_for_review = functions.https.onRequest(async (request, res
         emailTemplate = require('./emails/book_rejected');
       }
 
-    mailOptions["html"] = emailTemplate.template(userName, bookName)
+    mailOptions["html"] = emailTemplate.template(userName.trim(), bookName)
     const nodeMailTransport = await getMailTransport()
     nodeMailTransport.sendMail(mailOptions);
   
@@ -143,7 +144,7 @@ exports.book_requested = functions.https.onRequest(async (request, response) => 
         from: `Overbooked <${gmailEmail}>`,
         to: bookData.User.email,
         subject: bookData.name + " has been requested!",
-        html: emailTemplate.template(bookData.User.name, bookData.name, requesterData.name)
+        html: emailTemplate.template(bookData.User.name.trim(), bookData.name, requesterData.name.trim())
     };
 
     const nodeMailTransport = await getMailTransport()
@@ -171,16 +172,16 @@ exports.book_request_approved = functions.https.onRequest(async (request, respon
     const mailOptions_owner = {
         from: `Overbooked <${gmailEmail}>`,
         to: bookData.User.email,
-        subject: bookData.name + "request approved!",
-        html: emailTemplate_owner.template(bookData.User.name, bookData.name, requesterData.name, 
+        subject: bookData.name + " request approved!",
+        html: emailTemplate_owner.template(bookData.User.name.trim(), bookData.name, requesterData.name, 
             requesterData.notification_email ? requesterData.email : "Not shared",
             requesterData.notification_phone ? requesterData.phone_number : "Not shared")
     };
     const mailOptions_requester = {
         from: `Overbooked <${gmailEmail}>`,
         to: requesterData.email,
-        subject: bookData.name + "request approved!",
-        html: emailTemplate_requester.template(requesterData.name, bookData.name, bookData.User.name,
+        subject: bookData.name + " request approved!",
+        html: emailTemplate_requester.template(requesterData.name.trim(), bookData.name, bookData.User.name,
             bookData.User.notification_email ? bookData.User.email : "Not shared",
             bookData.User.notification_phone ? bookData.User.phone_number : "Not shared")
     };
