@@ -100,15 +100,19 @@ export default function NavBarAppBar() {
           <Image loader={({src}) => src} src={logo} width={43.75} height={35} layout="fixed" />
           
 
-          <Link href="/"><Typography style={{marginLeft: '8px'}} variant="h6" className={classes.title}>
+          <Link href="/"><Typography style={{marginLeft: '8px'}} variant="h6" component="a" className={classes.title}>
             Overbooked
           </Typography></Link>
 
           
 
           {/* <Link href="/add"><Button style={{color: 'white'}}>Add Books</Button></Link> */}
-
-          {authUser ? <IconButton
+          <div style={{display: 'flex', alignItems: 'center'}}>
+          <Link href="/about-us"><Typography style={{marginLeft: '8px'}} component="a" variant="a" className={classes.title}>
+            About Us
+          </Typography></Link>
+          {authUser ?
+          <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
@@ -117,6 +121,8 @@ export default function NavBarAppBar() {
           >
             <AccountCircle />
           </IconButton> : <Button onClick={() => setLoginVisible(true)} color="inherit">Login</Button>}
+          </div>
+
           <Menu
             id="menu-appbar"
             anchorEl={anchorEl}
@@ -136,7 +142,7 @@ export default function NavBarAppBar() {
             <Link href="/account/books"><MenuItem onClick={handleClose}>My Books</MenuItem></Link>
             <Link href="/account/interests"><MenuItem onClick={handleClose}>My Interests</MenuItem></Link>
           </Menu>
-
+          
         </Toolbar>
       </AppBar>
 
