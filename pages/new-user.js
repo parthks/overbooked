@@ -132,7 +132,7 @@ export default function NewUserRegistration() {
 
         {!getStarted ? 
         <div>
-        <Typography>Some message welcoming and explaining Overbooked to the new user</Typography>
+        <Typography>Hello and welcome to Overbooked!</Typography>
 
         {loggedIn === null ? '' : 
         loggedIn ? 

@@ -73,6 +73,13 @@ if (typeof window !== "undefined") {
                         <ListItemText primary={"Add a Book"} />
                     </ListItem></Link>
                 </List>
+                <Divider />
+                <List>
+                    <Link href="/ngo-details"><ListItem selected={selectedPath === "/ngo-details"} button>
+                        <ListItemIcon>{<LocalLibraryIcon />}</ListItemIcon>
+                        <ListItemText primary={"NGO Details"} />
+                    </ListItem></Link>
+                </List>
                 {/* <Divider />
                 <List>
                     <Link href="/account"><ListItem selected={selectedPath === "/account"} button>
