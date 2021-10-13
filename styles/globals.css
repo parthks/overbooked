@@ -38,3 +38,8 @@ a {
 }
 
 
+.book-tile-content .MuiTypography-root {
+  min-height: 55px;
+  font-size: 1.2rem;
+}
+

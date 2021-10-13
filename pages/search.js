@@ -83,7 +83,7 @@ export default function SearchBooks({}) {
 
 
   <div className={styles.grid}>
-  {loading ? '' : books.map(bookData => <BookTile key={bookData.id} data={bookData} />)}
+  {loading ? 'Loading...' : books.map(bookData => <BookTile key={bookData.id} data={bookData} />)}
   </div>
 
    

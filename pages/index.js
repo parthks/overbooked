@@ -1,9 +1,12 @@
+import styles from '../styles/Home.module.css'
+
 import logo from '../public/logo.png'
 import Image from 'next/image'
 import NextLink from 'next/link'
 
 import { useRouter } from 'next/router'
-
+import {QUERY_RECENT_BOOKS} from '../lib/graphql/books'
+import adminClient from '../lib/graphql/admin'
 
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
@@ -12,11 +15,14 @@ import Link from '@material-ui/core/Link';
 import { Input } from 'antd';
 import { Typography } from '@material-ui/core';
 
+import BookTile from '../components/BookTile'
+
+
 const { Search } = Input;
 
 
 
-export default function Home({}) {
+export default function Home({books}) {
   const router = useRouter()
 
 
@@ -45,6 +51,19 @@ export default function Home({}) {
         </Typography>
         
       </Box>
+
+    
+    </Container>
+
+    <Container maxWidth="lg">
+    <Typography style={{fontWeight: 'bold'}} variant={'h5'}>Recently uploaded books</Typography><br />
+    <div className={styles.grid}>
+      {books.map(bookData => <BookTile key={bookData.id} data={bookData} />)}
+    </div>
+    <br />
+    <div style={{textAlign: 'center'}}>
+    <Link href={`/search`}>See All Books</Link>
+    </div>
     </Container>
 
 
@@ -66,16 +85,17 @@ export default function Home({}) {
 export async function getStaticProps() {
   
 
-  // const {data} = await adminClient.query({
-  //   query: QUERY_ALL_BOOKS
-  // });
+  const {data} = await adminClient.query({
+    query: QUERY_RECENT_BOOKS
+  });
 
   // console.log(data)
 
 
   return {
     props: {
-      books: []
+      books: data.Books
     },
+    revalidate: 600
   }
 }

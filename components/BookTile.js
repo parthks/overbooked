@@ -1,3 +1,5 @@
+import {useEffect, useRef} from 'react'
+
 import { Grid } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -13,12 +15,20 @@ import Link from 'next/link'
 
 
 export default function BookTile({data}) {
-    return <Link href={`/book/${data.name.toLowerCase().split(" ").join("-")}-${data.id}`}><Card onClick={() => {
+    const headerRef = useRef(null)
+
+    useEffect(() => {
+      console.log('headerRef', headerRef)
+      console
+    })
+
+    return <Link href={`/book/${data.name.toLowerCase().split(" ").join("-")}-${data.id}`}>
+      <Card onClick={() => {
         console.log("CARD CLICK", data)
         localStorage.setItem("book-click", "true")
     }}>
-        <CardActionArea>
-        <CardHeader title={data.name} />
+        <CardActionArea style={{height: '100%', display: 'contents'}}>
+        <CardHeader className={"book-tile-content"} ref={headerRef} style={{fontSize: '1.2rem', height: '107px'}} title={data.name} />
         {/* <Typography gutterBottom variant="h5" component="h2">
             {data.name}
           </Typography>
@@ -26,7 +36,7 @@ export default function BookTile({data}) {
         <CardMedia
           component="img"
           alt={data.name}
-          style={{height: 200, objectFit: 'contain'}}
+          style={{height: 181, objectFit: 'contain'}}
           image={"https://overbooked.imgix.net/books/"+data.id+"/"+data.cover_image+"?h=200"}
           title={data.name}
         />
@@ -38,8 +48,7 @@ export default function BookTile({data}) {
           <Typography variant="body2" color="textSecondary" component="p">
           
             By {data.book_authors.map(d => d?.Author?.name).join(", ")}
-          </Typography>
-          
+          </Typography>          
         </CardContent>
       </CardActionArea>
         
