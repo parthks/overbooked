@@ -34,7 +34,7 @@ export default function SearchBooks({}) {
   });
 
 
-  const books = loading ? [] : data.Books
+  const books = loading ? [] : (data ? data.Books : "ERROR")
   // const [loading, setLoading] = useState(false)
   console.log(books)
   console.log(router.query)
@@ -83,7 +83,7 @@ export default function SearchBooks({}) {
 
 
   <div className={styles.grid}>
-  {loading ? 'Loading...' : books.map(bookData => <BookTile key={bookData.id} data={bookData} />)}
+  {loading ? 'Loading...' : (books === "ERROR" ? "Error please try again" : books.map(bookData => <BookTile key={bookData.id} data={bookData} />) )}
   </div>
 
    
