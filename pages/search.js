@@ -16,7 +16,7 @@ import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
 
 
-import { Input } from 'antd';
+import { Input, Checkbox } from 'antd';
 
 const { Search } = Input;
 
@@ -26,11 +26,16 @@ export default function SearchBooks({}) {
   const router = useRouter()
 
   const inputRef = React.useRef(null)
+  const [fiction, setFiction] = useState(router?.query?.type === "fiction")
+  const [nonFiction, setNonFiction] = useState(router?.query?.type === "non-fiction")
 
   // const [searchQuery, setSearchQuery] = useState(`%${router.query.q ? router.query.q : ''}%`)
 
   const { loading, error, data } = useQuery(QUERY_ALL_BOOKS, {
-    variables: { search: `%${router.query.q ? router.query.q.toLowerCase() : ''}%` },
+    variables: { 
+      search: `%${router.query.q ? router.query.q.toLowerCase() : ''}%`,
+      type: `${router.query.type ? router.query.type.toLowerCase() : ''}%` 
+    },
   });
 
 
@@ -43,22 +48,24 @@ export default function SearchBooks({}) {
 
   const onSearch = (value) => {
     console.log({value})
-    // alert(value)
-    // setSearchQuery(`%${value}%`)
 
     inputRef.current?.blur()
-
-    // setSearchQuery(`%${value}%`)
-    if (!value) {
-      router.push("/search")
+    let type = null
+    if (fiction && nonFiction) {
+      type = null
+    } else if (fiction) {
+      type = "type=fiction"
+    } else if (nonFiction) {
+      type = "type=non-fiction"
     } else {
-      router.push("/search?q="+value)
+      type = null
     }
 
-    // inputRef.current!.focus({
-    //   cursor: 'end',
-    // });
-    // setLoading(false)
+    let query = `/search?`
+    if (value) query += ("q="+value+"&") 
+    if (type) query += type+"&" 
+    router.push(query)
+
   }
   
   return (<>
@@ -78,6 +85,14 @@ export default function SearchBooks({}) {
         allowClear 
         placeholder="Search by title or author" 
         enterButton="Search" size="large" loading={loading} onPressEnter={(e) => onSearch(e.target.value)} />
+        <Checkbox checked={fiction} onChange={(e) => {
+          const checked = e.target.checked
+          setFiction(checked)
+        }}>fiction</Checkbox>
+         <Checkbox checked={nonFiction} onChange={(e) => {
+          const checked = e.target.checked
+          setNonFiction(checked)
+        }}>non-fiction</Checkbox>
       </Box>
     </Container>
 

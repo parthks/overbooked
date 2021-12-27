@@ -108,7 +108,10 @@ export default function NavBarAppBar() {
 
           {/* <Link href="/add"><Button style={{color: 'white'}}>Add Books</Button></Link> */}
           <div style={{display: 'flex', alignItems: 'center'}}>
-          <Link href="/about-us"><Typography style={{marginLeft: '8px'}} component="a" variant="inherit" className={classes.title}>
+          <Link href="/how-to-use"><Typography style={{marginLeft: '8px'}} component="a" variant="inherit" className={classes.title}>
+            How To Use
+          </Typography></Link>
+          <Link href="/about-us"><Typography style={{marginLeft: '16px'}} component="a" variant="inherit" className={classes.title}>
             About Us
           </Typography></Link>
           {authUser ?
